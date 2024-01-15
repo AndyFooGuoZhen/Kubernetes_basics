@@ -138,6 +138,20 @@ kubectl create -f <name of pod.yaml file>
 ```
 kubectl delete pod <name of pod>
 ```
+#### Update / run a pod
+```
+kubectl apply -f <name of pod,.yaml file>
+```
+
+#### Detailed inspection of a pod
+```
+kubectl describe pod <pod name>
+```
+
+#### Logs of a pod (Used for debugging application errors)
+```
+kubectl logs <pod name>
+```
 
 ### Pod config equiv to docker command
 
