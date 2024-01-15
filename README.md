@@ -85,7 +85,7 @@ Kubernetes has to understand underlying cloud provider. EX: Kubernetes has to cr
 CCM is open source, suppose there's a new cloud provider and one one's to deploy it on the new clour provider. New api's can be written onto the CCM to allow kubernetes to interact with the new cloud provider
 
 #### Creating minitarized kubernetes cluster
-1. Install Minikube
+1. Install Minikube : Creating kubernetes cluster
 2. Install kubectl : kubernetes cli
 
 #### Pods - Wrapper for container(s)
@@ -94,6 +94,24 @@ Deployed in kubernetes, wraps container(s). In docker, user specifies how to run
 Putting group of containers in a single pod, kubernetes will allow shared networking and shared storage among the containers. Containers inside a pod can talk to each other using localhost and access files via same file system.
 
 When pods are created, a cluster IP address is generated for the pods.
+
+### Minikube commands
+
+Starting a cluster (Via docker driver)
+```
+minikube start
+```
+
+After starting cluster with minikube, kubectl get pods will return minikube as a running node
+
+NOTE : In advanced cases, dont start it using docker driver, use command below instead.
+
+Starting a cluster with specific memory requirements on VM
+```
+minikube start --memory=4096 --driver=hyperkit
+```
+Minikube creates a virtual machine then a single node on this VM.
+
 
 ### Kubectl - Kubernetes CLI
 
