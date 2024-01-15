@@ -137,7 +137,7 @@ kubectl create -f <name of pod.yaml file>
 #### Deleting a pod
 ```
 kubectl delete pod <name of pod>
-
+```
 
 ### Pod config equiv to docker command
 
