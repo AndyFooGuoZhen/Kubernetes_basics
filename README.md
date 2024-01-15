@@ -97,7 +97,7 @@ When pods are created, a cluster IP address is generated for the pods.
 
 ### Minikube commands
 
-Starting a cluster (Via docker driver)
+#### Starting a cluster (Via docker driver)
 ```
 minikube start
 ```
@@ -106,19 +106,57 @@ After starting cluster with minikube, kubectl get pods will return minikube as a
 
 NOTE : In advanced cases, dont start it using docker driver, use command below instead.
 
-Starting a cluster with specific memory requirements on VM
+#### Starting a cluster with specific memory requirements on VM
 ```
 minikube start --memory=4096 --driver=hyperkit
 ```
 Minikube creates a virtual machine then a single node on this VM.
 
+#### Log in to access a cluster
+```
+minikube ssh
+```
+Then do curl <IP Address of pod> to access pod
 
 ### Kubectl - Kubernetes CLI
 
-To check number of nodes
-
+#### To check number of nodes
 ```
 kubectl get nodes
 ```
 
+#### Check pods details
+```
+kubectl get pods -o wide
+```
+
+#### Creating a pod
+```
+kubectl create -f <name of pod.yaml file>
+```
+#### Deleting a pod
+```
+kubectl delete pod <name of pod>
+
+
+### Pod config equiv to docker command
+
+Pod.yaml
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
+
+Docker command
+```
+docker run -d nginx:1.14.2 --name nginx -p 80:80
+```
 
