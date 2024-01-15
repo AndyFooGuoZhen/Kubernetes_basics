@@ -58,7 +58,7 @@ Docker : You've built a container, to run a java application for that container 
 Kubernetes : On default there will be a master node (Control plane) and worker node(s) (Data Plane). When user tries to deploy a pod, pod gets deployed on worker node, a component called Kubelet runs your pod that is reponsible for maintaining the pod. Inside the pods, there will be container runtimes (not necessarily dockershim as other container runtime alternatives can be used as well) to run the containers within the pods. Container runtime interacts with kubernetes with container interface.\
 
 #### Docker0 (Veth) vs Kube proxy
-Kube proxy provide network , IP addresses , load balancing capabilities to pods. 
+Kube proxy provide network , cluster IP addresses , load balancing capabilities to pods. 
 
 ### Components in master node (Control plane)
 - Api server
@@ -84,5 +84,23 @@ Kubernetes has to understand underlying cloud provider. EX: Kubernetes has to cr
 
 CCM is open source, suppose there's a new cloud provider and one one's to deploy it on the new clour provider. New api's can be written onto the CCM to allow kubernetes to interact with the new cloud provider
 
+#### Creating minitarized kubernetes cluster
+1. Install Minikube
+2. Install kubectl : kubernetes cli
+
+#### Pods - Wrapper for container(s)
+Deployed in kubernetes, wraps container(s). In docker, user specifies how to run docker containers by passing in parameters such as -p 3000:3000 for networking. In kubernetes, we specify these in a pod.yaml file.
+
+Putting group of containers in a single pod, kubernetes will allow shared networking and shared storage among the containers. Containers inside a pod can talk to each other using localhost and access files via same file system.
+
+When pods are created, a cluster IP address is generated for the pods.
+
+### Kubectl - Kubernetes CLI
+
+To check number of nodes
+
+```
+kubectl get nodes
+```
 
 
