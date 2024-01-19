@@ -182,5 +182,8 @@ Pod can be used to wrap multiple containers. Running config and container specif
 
 Deploy allows pod to support autohealing and autoscaling feature. Using deploy, we never manually create the pods ourselves.
 
+## Deploy
+Deployment resource (a yaml file) is used to define how many pods are created. Deployment will also use the replicaset (a controller) to maintain the number of pods. When no of pods specified in deployment resource have changed, the desired state and actual state has a mismatch, replicaset detects this change and adds/deducts no of pods depending on the configuration in deployment
+
 
 
