@@ -174,3 +174,13 @@ Docker command
 docker run -d nginx:1.14.2 --name nginx -p 80:80
 ```
 
+## Container vs Pods vs Deploy
+
+Container is used to wrap an application. To run the application via docker, parameters (networking, detahcment) can be provided to run the docker container.
+
+Pod can be used to wrap multiple containers. Running config and container specifications are defined within a pod.yaml file. Benefit of using pods is that multiple containers are wrapped under a single logical unit, allowing containers to communicate with each other via localhost network.
+
+Deploy allows pod to support autohealing and autoscaling feature. Using deploy, we never manually create the pods ourselves.
+
+
+
