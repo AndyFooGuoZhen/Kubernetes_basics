@@ -251,5 +251,14 @@ Instead of having multiple pods with random IP that users can access. Users are 
 ### Service Discovery
 Service acts on top of the deployments. It doesn't keep track of the IP addresses of the pods when one is deleted / created. Instead is uses labels of the pods. We specify the labels in the metadata portion of the deployment.yaml file.
 
+### Exposing application outside of kubernetes cluster 
+
+
+### 3 types of services 
+1. Via cluster IP : Application are only accesible within the cluster. Only users that have access to kubernetes cluster can access the application.
+2. Node port : allows application to be accessed by inside organization (IP address of worker node is accesible)
+3. Load balancer : Expose application to external world. Kubernetes uses CCM to talk with underlying cloud provider to obtain public IP address to expose application to the public.
+
+
 
 
