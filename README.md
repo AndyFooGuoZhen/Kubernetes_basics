@@ -125,9 +125,21 @@ Then do curl <IP Address of pod> to access pod
 kubectl get nodes
 ```
 
+#### Get no of pods
+```
+kubectl get pods
+```
+
+To see live updates , add -w behind command
+
 #### Check pods details
 ```
 kubectl get pods -o wide
+```
+
+#### Check deploys
+```
+kubectl get deploy
 ```
 
 #### Creating a pod
@@ -138,9 +150,19 @@ kubectl create -f <name of pod.yaml file>
 ```
 kubectl delete pod <name of pod>
 ```
+#### Deleting a deployment
+```
+kubectl delete deploy <name of deploy>
+```
+
 #### Update / run a pod
 ```
-kubectl apply -f <name of pod,.yaml file>
+kubectl apply -f <name of pod.yaml file>
+```
+
+#### Create / run a deployment
+```
+kubectl apply -f <name of deployment.yaml file>
 ```
 
 #### Detailed inspection of a pod
@@ -151,6 +173,11 @@ kubectl describe pod <pod name>
 #### Logs of a pod (Used for debugging application errors)
 ```
 kubectl logs <pod name>
+```
+
+#### Get replicasets
+```
+kubectl get rs
 ```
 
 ### Pod config equiv to docker command
@@ -184,6 +211,34 @@ Deploy allows pod to support autohealing and autoscaling feature. Using deploy, 
 
 ## Deploy
 Deployment resource (a yaml file) is used to define how many pods are created. Deployment will also use the replicaset (a controller) to maintain the number of pods. When no of pods specified in deployment resource have changed, the desired state and actual state has a mismatch, replicaset detects this change and adds/deducts no of pods depending on the configuration in deployment
+
+## Example deployment config
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+
 
 
 
