@@ -238,7 +238,18 @@ spec:
         - containerPort: 80
 ```
 
+## Kubernetes Pods IP
+Suppose we've created 3 pods as we specified 3 replicas in our deployment resource. With one pod deleted, a new pod will be created with a new IP address. The issue arises when developers would like to test the pods. Previous IP given to the developers wont work as the new pod is assigned a new random IP.
+This issue can be solved with kubernetes service.
 
+## Kubernetes Service
+Abstraction that provides network access to pods. Kubernetes serves multiple functionalities listed below:
+
+### Load balancing
+Instead of having multiple pods with random IP that users can access. Users are given the service IP instead. Using the previous example, kubernetes service acts as a load balancer, depending on the number of users/requests, users will access different assigned pods.
+
+### Service Discovery
+Service acts on top of the deployments. It doesn't keep track of the IP addresses of the pods when one is deleted / created. Instead is uses labels of the pods. We specify the labels in the metadata portion of the deployment.yaml file.
 
 
 
