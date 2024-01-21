@@ -253,11 +253,17 @@ Service acts on top of the deployments. It doesn't keep track of the IP addresse
 
 ### Exposing application outside of kubernetes cluster 
 
-
 ### 3 types of services 
 1. Via cluster IP : Application are only accesible within the cluster. Only users that have access to kubernetes cluster can access the application.
 2. Node port : allows application to be accessed by inside organization (IP address of worker node is accesible)
 3. Load balancer : Expose application to external world. Kubernetes uses CCM to talk with underlying cloud provider to obtain public IP address to expose application to the public.
+
+### Creating deploymentment with docker images
+1. Once a dockerfile is created, build a docker image with name and tag
+2. Copy kubernetes deployment template from online documentation and change labels to your liking
+3. In the spec section of the deployment.yml file, include the image and tag name of the docker image created (Integration with docker images)
+4. Set containerPort to match with ports exposed in Dockerfile
+5. Build the kubectl deployment resource
 
 
 
