@@ -112,11 +112,16 @@ minikube start --memory=4096 --driver=hyperkit
 ```
 Minikube creates a virtual machine then a single node on this VM.
 
-#### Log in to access a cluster
+#### Log in to access a cluster and run the application
 ```
 minikube ssh
 ```
-Then do curl <IP Address of pod> to access pod
+Then do curl <IP Address of pod> to access application in pod
+
+### Getting IP of minikube cluster
+```
+minikube ip
+```
 
 ### Kubectl - Kubernetes CLI
 
@@ -178,6 +183,16 @@ kubectl logs <pod name>
 #### Get replicasets
 ```
 kubectl get rs
+```
+
+#### Create a service 
+```
+kubectl apply -f <name of service.yaml file>
+```
+
+### Get kubernetes services
+```
+kubectl get svc
 ```
 
 ### Pod config equiv to docker command
@@ -264,6 +279,40 @@ Service acts on top of the deployments. It doesn't keep track of the IP addresse
 3. In the spec section of the deployment.yml file, include the image and tag name of the docker image created (Integration with docker images)
 4. Set containerPort to match with ports exposed in Dockerfile
 5. Build the kubectl deployment resource
+
+### Creating a service (with Nodeport option) 
+
+Example service.yml
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-app-service
+spec:
+  type: NodePort
+  selector:
+    app: frontend-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30008
+```
+
+1. Create a service.yml file
+2. Copy nodeport service template from kubernetes documentation
+3. in metadata of service file, name can be any name you want to name your service
+4. in selector section of service file, the name must match the labels in the template section of deployment.yml
+5. Replace  app.kubernetes.io/name: MyApp with app: <labelname> from deployment.yml
+6. Change target port to port for application , EX: react app : 3000
+7. Change port to 3000, save the service.yml file and run it via the kubectl apply -f <service.yml> command
+8. On normal scenario, http://<minikubeIP>:<nodePort> would show the running application in the browser. The application is only accesible on the developer's browser as only the Nodeport is used. Skip to step 11 if this works. Else, refer to step 9 and 10 instead.
+9. Using minikube however, Nodeport seems to be hidden and not exposed to the browser. More information regarding this issue can be found here : https://stackoverflow.com/questions/76470764/why-i-cant-get-access-to-app-from-browser-with-kubernetes-minikube
+10. Running this command would expose your NodePort
+    ```
+    minikube service <serviceName>
+    ```
+
 
 
 
