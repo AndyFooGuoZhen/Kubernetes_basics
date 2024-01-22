@@ -318,8 +318,26 @@ NOTE : LoadBalancer wont work on minikube and will only work on cloud providers 
 
 1. Refer to previous steps for creating a service
 2. Change Type of Nodeport to LoadBalancer
-3. If you have an existing service with NodePort mode, edit service via this command ``` kubectl sedit svc <servicename> ```
-4. Change type from NodePort to LoadBalancer
+3. If you have an existing service with NodePort mode, edit service via this command :
+```
+kubectl sedit svc <servicename>
+```
+5. Change type from NodePort to LoadBalancer
+
+### Ingress
+Problem 1: When developers migrate legacy applications from VM to kubernetes, they are using enterprise level load balancers (Ngnix, F5) that offers advanced load balancing capablities (Ratio based, Sticky session - where one request and associated request from one user is directed to only one application, whitelisting, blacklisting). Loadbalancer offered by service in kubernetes is too basic as it uses Round Robin (FIFO).
+
+Problem 2: For large organizations using 1000's of services in loadbalancer mode, cloud provider charges a hefty amount as each service is assigned a static load balancer IP. Before migration, developers only have one load balancer with their IP exposed, path is added to direct to specific application within the VM.
+
+Solution : Kubernetes come up with ingress resource. Developers can config their ingress resource to have different types of load balancing. But logic for loadbalancing is then controlled by a ingress controller (just like how a pod is managed by a kubelet or service is managed by kubeproxy), the ingress controller is built by load balancer provider such as nginx and F5. Developer's have to also deploy the ingress controller by referring to the load balancer's provider for documentation and specific instructions. In short, developer has to come up with ingress resource (a .yaml file), and developer finds the implementation of the load balancer from providers to deploy.
+
+
+
+
+
+
+
+
 
 
 
