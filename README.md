@@ -273,7 +273,7 @@ Service acts on top of the deployments. It doesn't keep track of the IP addresse
 2. Node port : allows application to be accessed by inside organization (IP address of worker node is accesible)
 3. Load balancer : Expose application to external world. Kubernetes uses CCM to talk with underlying cloud provider to obtain public IP address to expose application to the public.
 
-### Creating deploymentment with docker images
+### Creating deployment with docker images
 1. Once a dockerfile is created, build a docker image with name and tag
 2. Copy kubernetes deployment template from online documentation and change labels to your liking
 3. In the spec section of the deployment.yml file, include the image and tag name of the docker image created (Integration with docker images)
@@ -312,6 +312,14 @@ spec:
     ```
     minikube service <serviceName>
     ```
+
+### Expopsing a service to public (with Loadbalancer option)
+NOTE : LoadBalancer wont work on minikube and will only work on cloud providers (EC2, etc)
+
+1. Refer to previous steps for creating a service
+2. Change Type of Nodeport to LoadBalancer
+3. If you have an existing service with NodePort mode, edit service via this command ``` kubectl sedit svc <servicename> ```
+4. Change type from NodePort to LoadBalancer
 
 
 
