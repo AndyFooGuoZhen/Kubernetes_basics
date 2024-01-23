@@ -190,9 +190,19 @@ kubectl get rs
 kubectl apply -f <name of service.yaml file>
 ```
 
+#### Create an ingress resource 
+```
+kubectl apply -f <name of ingress.yaml file>
+```
+
 ### Get kubernetes services
 ```
 kubectl get svc
+```
+
+### Get Kubernetes ingress
+```
+kubectl get ingress
 ```
 
 ### Pod config equiv to docker command
@@ -330,6 +340,61 @@ Problem 1: When developers migrate legacy applications from VM to kubernetes, th
 Problem 2: For large organizations using 1000's of services in loadbalancer mode, cloud provider charges a hefty amount as each service is assigned a static load balancer IP. Before migration, developers only have one load balancer with their IP exposed, path is added to direct to specific application within the VM.
 
 Solution : Kubernetes come up with ingress resource. Developers can config their ingress resource to have different types of load balancing. But logic for loadbalancing is then controlled by a ingress controller (just like how a pod is managed by a kubelet or service is managed by kubeproxy), the ingress controller is built by load balancer provider such as nginx and F5. Developer's have to also deploy the ingress controller by referring to the load balancer's provider for documentation and specific instructions. In short, developer has to come up with ingress resource (a .yaml file), and developer finds the implementation of the load balancer from providers to deploy.
+
+### Creating an ingress resource
+1. Make a file named ingress.yml
+2. Copy and paste host based template from kubernetes ingress, change metadata name to ingress name, change service name to name of your service , and port to configured port
+   ```
+   apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: ingress-wildcard-host
+    spec:
+      rules:
+      - host: "foo.bar.com"
+        http:
+          paths:
+          - pathType: Prefix
+            path: "/bar"
+            backend:
+              service:
+                name: service1
+                port:
+                  number: 80
+      ```
+ 3. In this host-based ingress resource, we specify that users will visit foo.bar.com/bar to navigate to the main page of the application.
+ 4. Having the ingress resource setup wont make ingress work, we still need to install and manager our ingress controller. Kubectl get ingress will return inngress without an IP address Refer to https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+  for more details on installation.
+ 6. We will install nginx ingress controller with minikube for this tutorial. Resource : https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+ 7. to check if ingress controller is synced with ingress resource, use command:
+    
+  ```
+  # To check ingress-controller name
+  kubectl get pods -n ingress-nginx
+
+  # To check if ingress resouces is synced
+  kubectl logs ingress-nginx-controller-7c6974c4d8-h4lcb -n ingress-nginx
+
+  # Once the command is ran, scroll down json file to see if ingress-example       (or name of ingress ) can be found
+  ```
+8. Once that is done, do kubectl get ingress, the IP address will be attached. On production, the step ends here. Refer to steps 9 and more when working with minikube (localhost). 
+9. On localhost (when using minikube), we need to configure the mapping between the domain to the IP. We mock the behavior of having a purchased domain name
+10. Use this command to performing mapping of IP and paste the mapping into the file
+    ```
+    sudo nano /etc/hosts
+
+    # Paste IP mapping
+    192.168.49.2 <name of host>
+    
+    ```
+11. Even with this done, you cant access the domain-based website on browser. Only by doing minikube ssh , and using the curl http://<domain>/path command you can test to see if it works. More details : https://stackoverflow.com/questions/66275458/could-not-access-kubernetes-ingress-in-browser-on-windows-home-with-minikube
+
+
+
+
+    
+  
+  
 
 
 
