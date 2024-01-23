@@ -243,24 +243,24 @@ Deployment resource (a yaml file) is used to define how many pods are created. D
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: frontend-app
   labels:
-    app: nginx
+    app: frontend-app
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: nginx
+      app: frontend-app
   template:
     metadata:
       labels:
-        app: nginx
+        app: frontend-app
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.14.2
+      - name: frontend
+        image: frontend:v1
         ports:
-        - containerPort: 80
+        - containerPort: 3000
 ```
 
 ## Kubernetes Pods IP
