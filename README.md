@@ -389,7 +389,11 @@ Solution : Kubernetes come up with ingress resource. Developers can config their
     ```
 11. Even with this done, you cant access the domain-based website on browser. Only by doing minikube ssh , and using the curl http://<domain>/path command you can test to see if it works. More details : https://stackoverflow.com/questions/66275458/could-not-access-kubernetes-ingress-in-browser-on-windows-home-with-minikube
 
+### Configmaps
+Resource for storing env variables. Since pods may contain 1 or more containers that requires env variables, kubernetes allows the use and specification of env variables using configmaps without manually stepping into pods and containers to do so. Since data in configmaps are stored on ETCD (used for backups), hackers may use this to obtain sensitive information. NOTE : Store non-sensitive data here such as port details. 
 
+### Secrets
+Used to store sensitive information such as passwords. Difference between Configmaps and secrets is that the data in secrets are encrypted prior to storing in ETCD. Secrets also have RBAC (role based access control), so the admin can decide the level of access a developer has when it comes to secrets.
 
 
     
