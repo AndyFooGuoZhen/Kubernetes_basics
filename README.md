@@ -541,6 +541,9 @@ Doing so , you can see that the value for variable is encrypted
 
 ```
 
+NOTE : kubectl encryption uses basic base64 encrption, so only basic level of protection is provided when it comes to securing sensitive data in ETCD.
+
+
 
 
 
