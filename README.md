@@ -464,6 +464,60 @@ Used to store sensitive information such as passwords. Difference between Config
    env | grep DB
    ```
 10. Environtment variable with their assigned value will be shown
+
+#### Issue : If environment variables needs to be changed
+Changing the envrionment variables or their associated values will not affect the env variables in the container/pods. Restarting the build would not be a viable way in production as application traffic will be disrupted.
+
+Solution : Use volume mounts instead
+
+### Creating volumes for configmap
+1. Setup up configmap like steps shown above and create the configMap via kubectl apply command
+2. Navigate to deployment.yml, on the save level as containers:, and create a volume with a name, then create a volumeMount to mount the newly created volume. In this example, we created a volume that reads the env from configMap
+   ```
+     apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: frontend-app
+      labels:
+        app: frontend-app
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: frontend-app
+      template:
+        metadata:
+          labels:
+            app: frontend-app
+        spec:
+          containers:
+        - name: frontend
+          image: frontend:v1
+          volumeMounts:
+           - name: db-connection
+             mountPath: /opt
+          ports:
+          - containerPort: 3000
+        volumes:
+         - name : db-connection
+           configMap:
+              name: test-cm
+   ```
+4. Then, do kubectl apply on the deployment.yml file, and use kubectl exec command to check if the data is in the folder.
+   ```
+   # Accesing the pod
+   kubectl exec -it <podName> -- /bin/bash
+
+   # In the case where /bin/bash fails
+   kubectl exec -it <podName> -- /bin/sh
+
+   # Checking if env data is correct
+   cat /opt/<volumeName> | more
+
+   ```
+5. If edits are made to the configMap, kubectl apply must be ran for the configMap in order to reflect the changes in the deployment volume
+6. Note that changes wont be reflected immediately (few secs for changes to reflect)
+
    
 
 
