@@ -195,15 +195,26 @@ kubectl apply -f <name of service.yaml file>
 kubectl apply -f <name of ingress.yaml file>
 ```
 
-### Get kubernetes services
+#### Get kubernetes services
 ```
 kubectl get svc
 ```
 
-### Get Kubernetes ingress
+#### Get Kubernetes ingress
 ```
 kubectl get ingress
 ```
+
+#### Create a configmap resource
+```
+kubectl apply -f <name of cm.yaml file>
+```
+
+#### Get Kubernetes configmap
+```
+kubectl get cm
+```
+
 
 ### Pod config equiv to docker command
 
@@ -394,6 +405,66 @@ Resource for storing env variables. Since pods may contain 1 or more containers 
 
 ### Secrets
 Used to store sensitive information such as passwords. Difference between Configmaps and secrets is that the data in secrets are encrypted prior to storing in ETCD. Secrets also have RBAC (role based access control), so the admin can decide the level of access a developer has when it comes to secrets.
+
+### Creating a configmap resource
+1. Create a cm.yml file
+2. Paste this configmap template into cm.yml file
+   ```
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: test-cm
+    data:
+      db-port: "3306"
+   ```
+3. The name field in metadata refers to the name of the configmap resource
+4. In the data portion, environment variables and their values can be specified
+5. Once edited, apply the cm.yml resource to create the configmap
+6. Add env specifications in deployment.yml file
+   ```
+   apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: frontend-app
+      labels:
+        app: frontend-app
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: frontend-app
+      template:
+        metadata:
+          labels:
+            app: frontend-app
+        spec:
+          containers:
+          - name: frontend
+            image: frontend:v1
+            env:
+            - name : DB-PORT
+              valueFrom:
+               configMapKeyRef:
+                name: test-cm
+                key: db-port
+            ports:
+            - containerPort: 3000
+   ```
+7. In the configMapKeyRef, name refers to the configmap resource name, key refers to the env data specified in the data portion of the cm.yml file
+8. To test if envrionment variables are loaded and can be read, kubectl apply the deployment.yml and get pods tied to the deployment resource
+9. Run this command to inspect environment variables in the pods
+   ```
+   # Accesing the pod
+   kubectl exec -it <podName> -- /bin/bash
+
+   # In the case where /bin/bash fails
+   kubectl exec -it <podName> -- /bin/sh
+
+   # Inspecting envrioment variable that starts with DB
+   env | grep DB
+   ```
+10. Environtment variable with their assigned value will be shown
+   
 
 
     
