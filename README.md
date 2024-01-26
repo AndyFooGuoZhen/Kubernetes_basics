@@ -215,6 +215,10 @@ kubectl apply -f <name of cm.yaml file>
 kubectl get cm
 ```
 
+#### Editing a secret
+```
+kubectl edit secret <secretName>
+```
 
 ### Pod config equiv to docker command
 
@@ -518,7 +522,26 @@ Solution : Use volume mounts instead
 5. If edits are made to the configMap, kubectl apply must be ran for the configMap in order to reflect the changes in the deployment volume
 6. Note that changes wont be reflected immediately (few secs for changes to reflect)
 
-   
+### Creating a secret
+There are 2 ways to create configMaps/secrets, method 1 involves the creation of a .yml file whereas method 2 can be done via passing paramters in command line. Method 2 will be shown below.
+
+```
+kubectl create secret generic <secretName> --from-literal=<variableName>=<value>
+
+EX: 
+kubectl create secret generic test-secret --from-literal=db-port="3306"
+```
+
+Using method 2, kubectl apply command doesn't need to be ran. To look into the secrets file do :
+
+```
+kubectl edit secret <secretName>
+
+Doing so , you can see that the value for variable is encrypted
+
+```
+
+
 
 
     
