@@ -17,12 +17,13 @@ spec:
       containers:
       - name: frontend
         image: frontend:v1
-        env:
-        - name : DB-PORT
-          valueFrom:
-           configMapKeyRef:
-            name: test-cm
-            key: db-port
+        volumeMounts:
+         - name: db-connection
+           mountPath: /opt
         ports:
         - containerPort: 3000
-
+      volumes:
+       - name : db-connection
+         configMap:
+            name: test-cm
+         
