@@ -543,6 +543,21 @@ Doing so , you can see that the value for variable is encrypted
 
 NOTE : kubectl encryption uses basic base64 encrption, so only basic level of protection is provided when it comes to securing sensitive data in ETCD.
 
+## RBAC (Role based access control)
+In general, RBAC can be used to manage users and service accounts. 
+
+RBAC for users manages users access to kubernetes cluster. Depending on organization, some developers may have access to kubernetes cluster while others dont.
+
+RBAC for service accounts manages users access to services in the cluster. For instance, access to configure secrets for a project.
+
+### Creating users in RBAC
+Unlike linux, where you can create a user and password for them to access the linux machine, kubernetes offloads user management to identity providers. For instance, suppose kubernetes cluster runs on AWS, to access the kubernetes cluster, kubernetes offloads user management  to IAM Oauth provider provided by AWS (APi server uses OAuth provider).
+
+### Service accounts management in RBAC
+Just like creating a pod, you can create a sa.yaml file to define details for service account. On default when creating a pod, a service account is attached to the pod.
+
+### Role and Role binding
+After loggin in as user or have the application running using a service account, you can create roles. Roles determine user's access to pods, cluster, secrets. After a role is created, you can attach the role to a specific user via role binding. Using role binding you bind the user/service account with a specific role that is created to have certain privileges.
 
 
 
